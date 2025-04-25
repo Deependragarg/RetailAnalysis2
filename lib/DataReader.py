@@ -1,4 +1,5 @@
 from lib import ConfigReader
+from pathlib import Path
 
 #defining customer schema
 def get_customer_schema():
@@ -8,7 +9,9 @@ def get_customer_schema():
 #creating customer dataframe
 def read_customers(spark,env):
     conf = ConfigReader.get_app_config(env)
-    customers_file_path = conf["customers.file.path"]
+    #customers_file_path = conf["customers.file.path"]
+    base_path = Path(__file__).resolve().parent.parent  # Go to project root
+    customers_file_path = str(base_path / "data" / "customers.csv")
     return spark.read \
     .format("csv") \
     .option("header","true") \
@@ -22,7 +25,9 @@ def get_order_schema():
 
 def read_orders(spark,env):
     conf = ConfigReader.get_app_config(env)
-    orders_file_path = conf["orders.file.path"]
+    base_path = Path(__file__).resolve().parent.parent  # Go to project root
+    orders_file_path = str(base_path / "data" / "orders.csv")
+    #orders_file_path = conf["orders_file_path"]
     return spark.read \
     .format("csv") \
     .option("header","true") \

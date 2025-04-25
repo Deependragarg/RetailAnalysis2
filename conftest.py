@@ -1,5 +1,6 @@
 import pytest
 from lib.Utils import get_spark_session
+from pathlib import Path
 
 @pytest.fixture
 def spark():
@@ -11,7 +12,9 @@ def spark():
 @pytest.fixture
 def expected_result(spark):
     ex_schema = "state string, count int"
-    csv_file_path = r"E:\Learnings\The Ultimate Big Data\Projects\RetailAnalysis\data\test_results\state_aggregate.csv"
+    #csv_file_path = r"E:\Learnings\The Ultimate Big Data\Projects\RetailAnalysis\data\test_results\state_aggregate.csv"
+    base_path = Path(__file__).resolve().parent.parent  # Go to project root
+    csv_file_path = str(base_path / "data" / "state_aggregate.csv")
     return spark.read \
     .format("csv") \
     .option("header","true") \
